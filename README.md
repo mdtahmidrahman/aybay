@@ -26,8 +26,8 @@ A powerful and lightweight Android application for tracking income, expenses, bu
 
 You can install AyBay from:
 
-[![GitHub](https://img.shields.io/badge/GitHub-Install-informational?logo=github)](https://github.com/amisadman/aybay/releases/download/v.1.1/aybay-v.1.1.1.apk)
-[![OneDrive](https://img.shields.io/badge/OneDrive-Download-0078D4?logo=microsoftonedrive&logoColor=white)](https://1drv.ms/u/c/7b068b6862f36711/IQDfpf0AtFP7SrSQs8xawGjbAQg-erRAaJ6L1QB0QCtyFd0?e=SkBrvr)
+[![GitHub](https://img.shields.io/badge/GitHub-Install-informational?logo=github)](https://github.com/mdtahmidrahman/aybay/releases/download/v.1.2/aybay-v.1.2.apk)
+[![OneDrive](https://img.shields.io/badge/OneDrive-Download-0078D4?logo=microsoftonedrive&logoColor=white)](https://1drv.ms/u/c/7b068b6862f36711/IQDGbvUBgj9FRpCPFj4KWMQBAW8JdiaqYPQ40d2qCdqfOUI?e=lx8kCU)
 
 ---
 
@@ -118,23 +118,20 @@ graph TD
 
 ## Screenshots
 
-<p align="center">
-  <img src="ExternalResources/Screenshot_20250804_015223_AybayLite.jpg" width="200"/> &nbsp;
-  <img src="ExternalResources/Screenshot_20251211_104144_AybayLite.jpg" width="200"/> &nbsp;
-  <img src="ExternalResources/Screenshot_20251211_104214_AybayLite.jpg" width="200"/>
-</p>
+| **Splash Screen** | **User Registration** | **User Login** |
+|:----------------:|:-------------------:|:-------------:|
+| <img src="ExternalResources/Screenshot_20250804_015223_AybayLite.jpg" width="260"/> | <img src="ExternalResources/Screenshot_20251211_104144_AybayLite.jpg" width="260"/> | <img src="ExternalResources/Screenshot_20251211_104214_AybayLite.jpg" width="260"/> |
+| Welcome screen with app tagline | Create new account with email & PIN | Secure login with PIN authentication |
 
-<p align="center">
-  <img src="ExternalResources/Screenshot_20251211_103159_AybayLite.jpg" width="200"/> &nbsp;
-  <img src="ExternalResources/Screenshot_20251211_103215_AybayLite.jpg" width="200"/> &nbsp;
-  <img src="ExternalResources/Screenshot_20251211_103259_AybayLite.jpg" width="200"/>
-</p>
+| **Dashboard & Overview** | **Add Income** | **Income Statement** |
+|:----------------------:|:-------------:|:-------------------:|
+| <img src="ExternalResources/Screenshot_20251211_103159_AybayLite.jpg" width="260"/> | <img src="ExternalResources/Screenshot_20251211_103215_AybayLite.jpg" width="260"/> | <img src="ExternalResources/Screenshot_20251211_103259_AybayLite.jpg" width="260"/> |
+| Complete financial overview & balance | Record income with amount & date | Manage income entries with actions |
 
-<p align="center">
-  <img src="ExternalResources/Screenshot_20251211_103330_AybayLite.jpg" width="200"/> &nbsp;
-  <img src="ExternalResources/Screenshot_20251211_103347_AybayLite.jpg" width="200"/> &nbsp;
-  <img src="ExternalResources/Screenshot_20251211_103446_AybayLite.jpg" width="200"/>
-</p>
+| **Search & Filter** | **Backup & Restore** | **Walleo AI Assistant** |
+|:------------------:|:-------------------:|:---------------------:|
+| <img src="ExternalResources/Screenshot_20251211_103330_AybayLite.jpg" width="260"/> | <img src="ExternalResources/Screenshot_20251211_103347_AybayLite.jpg" width="260"/> | <img src="ExternalResources/Screenshot_20251211_103446_AybayLite.jpg" width="260"/> |
+| Search transactions by keywords fast | Cloud sync, backup & restore options | AI-powered financial guidance feature |
 
 
 ---
