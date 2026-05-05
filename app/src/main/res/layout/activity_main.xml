@@ -433,6 +433,35 @@
             android:layout_height="1dp"
             android:layout_marginTop="2dp"
             android:background="@color/white1" />
+        <LinearLayout
+            android:id="@+id/btnExportStatementPdf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:text="Export PDF"
+            android:focusable="true"
+            android:foreground="@drawable/button_background"
+            android:padding="6dp"
+            android:background="@drawable/ripple_rounded_button">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:src="@drawable/export_pdf"
+                android:contentDescription="Export pdf" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Export as PDF"
+                android:textSize="12sp"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:layout_marginStart="6dp"/>
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_main"
             android:layout_width="match_parent"

@@ -25,21 +25,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.amisadman.aybaylite.Controllers.DashboardManager;
 import com.amisadman.aybaylite.R;
+import com.amisadman.aybaylite.utils.TransactionHistoryPdfExporter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView tvFinalBalance, tvTotalExpense, tvTotalIncome, tvUsername;
     LinearLayout btnAddExpense, btnAddIncome, btnShowAllDataIncome, btnShowAllDataExpense;
+    LinearLayout btnExportStatementPdf;
     static RecyclerView recyclerView_main;
     static TextView tvNoDataMessage_main;
     static LottieAnimationView noDataAnimation_main;
+    LottieAnimationView balanceLottieAnimation;
     DashboardManager manager;
     static ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
     static MyAdapter adapter;
+    private final ExecutorService pdfExecutor = Executors.newSingleThreadExecutor();
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -62,10 +69,20 @@ public class MainActivity extends AppCompatActivity {
         btnAddIncome = findViewById(R.id.btnAddIncome);
         btnShowAllDataExpense = findViewById(R.id.btnShowAllDataExpense);
         btnShowAllDataIncome = findViewById(R.id.btnShowAllDataIncome);
+        btnExportStatementPdf = findViewById(R.id.btnExportStatementPdf);
         recyclerView_main = findViewById(R.id.recyclerView_main);
         noDataAnimation_main = findViewById(R.id.noDataAnimation_main);
         tvNoDataMessage_main = findViewById(R.id.tvNoDataMessage_main);
+        balanceLottieAnimation = findViewById(R.id.lottieAnimation);
         ImageButton btnLogout = findViewById(R.id.logout);
+
+        // Disable hardware acceleration on Lottie views to avoid HDR rendering issues
+        if (balanceLottieAnimation != null) {
+            balanceLottieAnimation.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+        if (noDataAnimation_main != null) {
+            noDataAnimation_main.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
 
         manager = new DashboardManager(this);
 
@@ -80,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         btnShowAllDataExpense.setOnClickListener(v -> startActivity(new Intent(this, ShowExpense.class)));
         btnShowAllDataIncome.setOnClickListener(v -> startActivity(new Intent(this, ShowIncome.class)));
         btnLogout.setOnClickListener(v -> finish());
+        btnExportStatementPdf.setOnClickListener(v -> exportTransactionHistoryPdf());
 
         FloatingActionButton btnWalleoChat = findViewById(R.id.btnWalleoChat);
         btnWalleoChat.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, WalleoActivity.class)));
@@ -120,6 +138,43 @@ public class MainActivity extends AppCompatActivity {
         tvTotalExpense.setText("৳ " + manager.getTotalExpense());
         double balance = Math.max(0, manager.getTotalIncome() - manager.getTotalExpense());
         tvFinalBalance.setText("৳ " + balance);
+    }
+
+    private void exportTransactionHistoryPdf() {
+        btnExportStatementPdf.setClickable(false);
+        btnExportStatementPdf.setAlpha(0.5f);
+        Toast.makeText(this, "Generating PDF...", Toast.LENGTH_SHORT).show();
+
+        pdfExecutor.execute(() -> {
+            try {
+                ArrayList<HashMap<String, String>> history = manager.loadDataFromDatabaseAscending();
+                String savedLocation = TransactionHistoryPdfExporter.export(this, history);
+                runOnUiThread(() -> {
+                    btnExportStatementPdf.setClickable(true);
+                    btnExportStatementPdf.setAlpha(1.0f);
+                    Toast.makeText(this, "Saved to: " + savedLocation, Toast.LENGTH_LONG).show();
+                });
+            } catch (IOException e) {
+                runOnUiThread(() -> {
+                    btnExportStatementPdf.setClickable(true);
+                    btnExportStatementPdf.setAlpha(1.0f);
+                    Toast.makeText(this, "PDF export failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        pdfExecutor.shutdownNow();
+        // Properly cleanup Lottie animations to prevent resource leaks
+        if (balanceLottieAnimation != null) {
+            balanceLottieAnimation.cancelAnimation();
+        }
+        if (noDataAnimation_main != null) {
+            noDataAnimation_main.cancelAnimation();
+        }
     }
 
     public static class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {

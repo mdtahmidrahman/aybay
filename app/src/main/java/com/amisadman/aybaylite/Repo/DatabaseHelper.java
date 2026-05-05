@@ -531,16 +531,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Get Combined Statement (Income and Expenses) sorted by time
     public ArrayList<HashMap<String, String>> getStatement() {
-        ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
-        arrayList.clear(); // Clear previous data
+        return getStatementOrdered("DESC");
+    }
 
+    public ArrayList<HashMap<String, String>> getStatementAscending() {
+        return getStatementOrdered("ASC");
+    }
+
+    private ArrayList<HashMap<String, String>> getStatementOrdered(String orderDirection) {
+        ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT 'Income' AS type, amount, reason, time FROM income " +
+        Cursor cursor = db.rawQuery("SELECT * FROM (" +
+                "SELECT 'Income' AS type, amount, reason, time FROM income " +
                 "UNION ALL " +
-                "SELECT 'Expense' AS type, -amount, reason, time FROM expense " +
-                "ORDER BY time DESC", null);
-        if (cursor != null && cursor.getCount() > 0) {
-            while (cursor.moveToNext()) {
+                "SELECT 'Expense' AS type, -amount, reason, time FROM expense" +
+                ") ORDER BY time " + orderDirection, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
                 String type = cursor.getString(0);
                 double amount = cursor.getDouble(1);
                 String reason = cursor.getString(2);
@@ -554,9 +562,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 hashMap.put("amount", String.valueOf(amount));
                 hashMap.put("reason", reason);
                 hashMap.put("time", formattedTime);
+                hashMap.put("timestamp", String.valueOf(timeMillis));
 
                 arrayList.add(hashMap);
-            }
+            } while (cursor.moveToNext());
             cursor.close();
         }
         return arrayList;

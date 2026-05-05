@@ -31,6 +31,10 @@ public class DashboardManager {
 
 
     }
+
+    public ArrayList<HashMap<String, String>> loadDataFromDatabaseAscending() {
+        return dbHelper.getStatementAscending();
+    }
     public double getTotalIncome(){
         return  dbHelper.calculateTotalIncome();
     }

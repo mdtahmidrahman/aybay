@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.amisadman.aybaylite.R;
 import com.amisadman.aybaylite.Controllers.AuthFacade;
+import com.airbnb.lottie.LottieAnimationView;
 
 public class LoginActivity extends AppCompatActivity {
     EditText login_password;
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
     LinearLayout signupLayout;
     AuthFacade authFacade;
+    LottieAnimationView animationView;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -40,6 +42,12 @@ public class LoginActivity extends AppCompatActivity {
         login_password = findViewById(R.id.login_password);
         login_button = findViewById(R.id.login_button);
         welcomeText = findViewById(R.id.welcomeText);
+        animationView = findViewById(R.id.animationView);
+        
+        // Disable hardware acceleration on Lottie view to avoid HDR rendering issues
+        if (animationView != null) {
+            animationView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
 
         authFacade = new AuthFacade(this);
 
@@ -74,5 +82,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Properly cleanup Lottie animation to prevent resource leaks
+        if (animationView != null) {
+            animationView.cancelAnimation();
+        }
     }
 }
